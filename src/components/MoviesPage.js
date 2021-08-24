@@ -34,8 +34,7 @@ const MoviesPage = () => {
 
     const [currentPage, setCurrentPage] = useState(0)
     const [numOfPages, setNumOfPages] = useState(0)
-
-    useEffect(() => {
+    const updateData = () => {
         if (searchTxt !== "") {
             searchData(searchTxt, currentPage).then(([results, resultsCount]) => {
                 setSearchMovies(results);
@@ -43,13 +42,21 @@ const MoviesPage = () => {
                 window.scrollTo(0, 0)
             })
         }
+    }
+
+    useEffect(() => {
+        updateData()
     }, [currentPage])
+
 
     const handleChange = (e, value) => {
         setTab(value)
     }
 
+
     const onButtonClick = (e) => {
+        if(currentPage === 1)
+            updateData()
         setCurrentPage(1);
         // if (searchTxt !== "") {
         //     searchData(searchTxt, 1).then(([results, resultsCount]) => {
