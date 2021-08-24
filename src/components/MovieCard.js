@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,6 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
 import image from '../assets/generic_poster.jfif'
+import { isFavourited, getFavourites, toggleFavourited } from '../services/localStorageHelper';
 // {
 //     "Title": "The L Word",
 //     "Year": "2004–2009",
@@ -15,14 +16,23 @@ import image from '../assets/generic_poster.jfif'
 //     "Type": "series",
 //     "Poster": "https://m.media-amazon.com/images/M/MV5BNTFjNzBlZDMtNzk0MS00NzhjLTgzODEtY2ZmMGQyMDZmMDNiXkEyXkFqcGdeQXVyMTA1OTAyOTI@._V1_SX300.jpg"
 // }
-export const MovieCard = ({ movie, handleFavouriteTap }) => {
+export const MovieCard = ({movie}) => {
+    const [favourited, setFavourited] = useState(isFavourited(movie.id))
+    const handleFavouriteTap = () => {
+        toggleFavourited(movie.id)
+        setFavourited(isFavourited(movie.id))
+    };
+
+    const handleShareTap = () => {
+        alert("Share tapped!")
+    }
 
     return (
         <Card style={{ margin: "2em" }}>
             <CardMedia
-                component="img" 
+                component="img"
                 src={movie.Poster !== "N/A" ? movie.Poster : image}
-                
+
                 title="Movie Poster"
                 style={{ maxWidth: "200px", margin: "auto", border: "5px solid grey", borderRadius: "5%" }}
             />
@@ -37,10 +47,18 @@ export const MovieCard = ({ movie, handleFavouriteTap }) => {
             </CardContent>
 
             <CardActions>
-                <IconButton aria-label="add to favorites" style={{ color: movie.isFav ? "orange" : "grey" }} onClick={(event) => handleFavouriteTap(movie)}>
+                <IconButton 
+                aria-label="add to favorites" 
+                style={{ color: (favourited ? "orange" : "grey") }} 
+                onClick={handleFavouriteTap}>
                     <FavoriteIcon />
                 </IconButton>
-                <IconButton aria-label="share" onClick={(event) => handleFavouriteTap(movie)}>
+
+                <IconButton
+                    aria-label="share"
+                    onClick={handleShareTap}
+                    >
+
                     <ShareIcon />
                 </IconButton>
             </CardActions>

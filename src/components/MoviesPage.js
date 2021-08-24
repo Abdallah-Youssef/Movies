@@ -2,7 +2,7 @@ import { AppBar, Button, InputBase, makeStyles, Tab, Tabs } from "@material-ui/c
 
 import { useState, useEffect } from "react"
 import { searchData } from "../services/api";
-import AllMovies from "./AllMovies";
+// import AllMovies from "./AllMovies";
 import Pagination from '@material-ui/lab/Pagination';
 import { MovieCard } from "./MovieCard";
 import { MoviesList } from "./MoviesList";
@@ -46,7 +46,7 @@ const MoviesPage = () => {
 
     useEffect(() => {
         updateData()
-    }, [currentPage])
+    }, [currentPage, searchTxt])
 
 
     const handleChange = (e, value) => {
@@ -57,14 +57,9 @@ const MoviesPage = () => {
     const onButtonClick = (e) => {
         if(currentPage === 1)
             updateData()
+        
+        // This should automatically trigger an update data
         setCurrentPage(1);
-        // if (searchTxt !== "") {
-        //     searchData(searchTxt, 1).then(([results, resultsCount]) => {
-        //         setSearchMovies(results);
-        //         setNumOfPages(Math.ceil(resultsCount / 10))
-        //         console.log(results);
-        //     })
-        // }
     }
 
 

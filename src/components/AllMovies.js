@@ -12,7 +12,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
 import { red } from '@material-ui/core/colors';
-import { addToFavArray, removeFromFavAray } from "../services/localStorageHelper";
+// import { addToFavArray, removeFromFavAray } from "../services/localStorageHelper";
 
 
 
@@ -46,14 +46,14 @@ const useStyles = makeStyles((theme) => ({
 
 const AllMovies = () => {
   const handleFavouriteTap = (movie) => {
-    const isFav = !movies[movie.id].isFav;
-    if (isFav) {
-      addToFavArray(movie.id);
-    }
-    else {
-      removeFromFavAray(movie.id);
-    }
-    setMovies(prevMovies => updateMovieFav(prevMovies, movie.id, { isFav: isFav }));
+    // const isFav = !movies[movie.id].isFav;
+    // if (isFav) {
+    //   addToFavArray(movie.id);
+    // }
+    // else {
+    //   removeFromFavAray(movie.id);
+    // }
+    // setMovies(prevMovies => updateMovieFav(prevMovies, movie.id, { isFav: isFav }));
   };
 
   const [pageNum, setPageNum] = useState(0)
