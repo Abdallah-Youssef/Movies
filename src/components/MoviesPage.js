@@ -1,9 +1,11 @@
 import { AppBar, Button, InputBase, makeStyles, Tab, Tabs } from "@material-ui/core"
 
-import { useState } from "react"
-import { getData, searchData } from "../services/api";
+import { useState, useEffect } from "react"
+import { searchData } from "../services/api";
 import AllMovies from "./AllMovies";
-import Pagination from "./pagination";
+import Pagination from '@material-ui/lab/Pagination';
+import { MovieCard } from "./MovieCard";
+import { MoviesList } from "./MoviesList";
 
 const useStyles = makeStyles((theme) => ({
     inputRoot: {
@@ -28,19 +30,37 @@ const MoviesPage = () => {
     const classes = useStyles();
     const [tab, setTab] = useState(0);
     const [searchTxt, setSearchTxt] = useState("");
-    const [searchMovies,setSearchMovies] = useState([]);
+    const [searchMovies, setSearchMovies] = useState([]);
+
+    const [currentPage, setCurrentPage] = useState(0)
+    const [numOfPages, setNumOfPages] = useState(0)
+
+    useEffect(() => {
+        if (searchTxt !== "") {
+            searchData(searchTxt, currentPage).then(([results, resultsCount]) => {
+                setSearchMovies(results);
+                setNumOfPages(Math.ceil(resultsCount / 10))
+                window.scrollTo(0, 0)
+            })
+        }
+    }, [currentPage])
 
     const handleChange = (e, value) => {
         setTab(value)
     }
 
     const onButtonClick = (e) => {
-        console.log(searchTxt)
-        searchData(searchTxt,1).then(results => {
-            setSearchMovies(results);
-          //console.log(results);
-        })
+        setCurrentPage(1);
+        // if (searchTxt !== "") {
+        //     searchData(searchTxt, 1).then(([results, resultsCount]) => {
+        //         setSearchMovies(results);
+        //         setNumOfPages(Math.ceil(resultsCount / 10))
+        //         console.log(results);
+        //     })
+        // }
     }
+
+
     return (
 
         <>
@@ -54,7 +74,9 @@ const MoviesPage = () => {
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     }}
-                    onChange={(event) => setSearchTxt(event.target.value)}
+                    onChange={(event) => {
+                        setSearchTxt(event.target.value)
+                    }}
                     placeholder="Search…"
                     inputProps={{ 'aria-label': 'search' }}
                 />
@@ -66,9 +88,11 @@ const MoviesPage = () => {
 
             {tab === 0 &&
                 (
-                    <div position= "center">
-                    <AllMovies/>
-                    <Pagination class= "center"/>
+                    <div position="center">
+                        <MoviesList movies={searchMovies}/>
+
+                        {/* <AllMovies movies={searchMovies}/> */}
+                        {/* <Pagination class= "center"/> */}
                     </div>
                 )}
 
@@ -77,6 +101,29 @@ const MoviesPage = () => {
                     Favourites
                 </h1>
             )}
+
+            {numOfPages > 0 && (
+
+                <Pagination
+                    count={numOfPages}
+                    page={currentPage}
+                    onChange={(e, v) => { setCurrentPage(v) }}
+                />
+
+            )}
+
+
+
+            {/* <MovieCard movie={{
+    "Title": "The L Word",
+    "Year": "2004–2009",
+    "imdbID": "tt0330251",
+    "Type": "series",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNTFjNzBlZDMtNzk0MS00NzhjLTgzODEtY2ZmMGQyMDZmMDNiXkEyXkFqcGdeQXVyMTA1OTAyOTI@._V1_SX300.jpg",
+    "id": "tt0330251"
+}}/> */}
+
+
 
         </>
     )

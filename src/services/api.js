@@ -8,15 +8,24 @@ export function searchData(search_term, page_number) {
 
     var my_url = `http://www.omdbapi.com/?s=${search_term}&apikey=68005424&page=${page_number}`
 
+
     return fetch(my_url, requestOptions)
         .then(response => {
-            console.log(response)
             return response.json();
         }).then(result => {
-            console.log(result.totalResults)
-            return result.Search.map((value) => {
-                return { ...value, id: value.imdbID }
-            })
+            console.log(result);
+            /**
+             * result props
+             *  Search : Array of the first 10 results
+             *  totalResults: number of results
+             */
+            if (result.Response === "True"){
+                return [
+                    result.Search.map((value) => ({ ...value, id: value.imdbID })),
+                    result.totalResults
+                ]
+            }
+            else return [[], 0]
         })
 }
 
@@ -27,3 +36,4 @@ export function updateMovieFav(movies, movieId, updatedProps) {
     }
     return moviesUpd;
 }
+
