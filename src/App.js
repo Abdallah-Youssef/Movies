@@ -8,9 +8,11 @@ function App() {
       
       <BrowserRouter>
         <Switch>
+          
           <Route exact path="/" component={Welcome}/>
 
           <Route path="/movies" component={MoviesPage}/>
+
         </Switch>
       </BrowserRouter>
      
