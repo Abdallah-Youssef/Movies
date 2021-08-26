@@ -33,7 +33,7 @@ class LoginApp extends React.Component {
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     return(
-      <div className="App">
+      <div className="LoginApp">
         <div className="login">
           <div className="container">
             {isLogginActive && <Login containerRef={ref => (this.current = ref)}/> }
