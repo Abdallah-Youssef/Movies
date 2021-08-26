@@ -1,7 +1,5 @@
 
-/**
- * This helper should be singelton class
- */
+import { getMovieById } from "./api";
 
 
 function isInLocalStorage(key) {
@@ -9,24 +7,24 @@ function isInLocalStorage(key) {
 }
 
 export function isFavourited(movieId) {
-    return getFavourites().includes(movieId)
+    return getFavouriteIds().includes(movieId)
 }
 
 function addToFavArray(movieId) {
-    let currentFav = getFavourites();
+    let currentFav = getFavouriteIds();
 
 
     console.group(`Adding ${movieId} to favourites`)
     console.log("Current favourites", currentFav);
 
     setFavourites([...currentFav, movieId])
-    console.log("After adding: ", getFavourites());
+    console.log("After adding: ", getFavouriteIds());
 
     console.groupEnd()
 }
 
 function removeFromFavAray(movieId) {
-    let currentFav = getFavourites();
+    let currentFav = getFavouriteIds();
     setFavourites(currentFav.filter(id => id !== movieId))
 }
 
@@ -46,9 +44,13 @@ export function toggleFavourited(movieId) {
         removeFromFavAray(movieId);
 }
 
-export function getFavourites() {
+export function getFavouriteIds() {
     if (!isInLocalStorage('favourites'))
         localStorage.setItem('favourites', JSON.stringify([]));
     return JSON.parse(localStorage.getItem('favourites'))
 }
 
+export function getFavouriteMovies() {
+    let favouritedIds = getFavouriteIds()
+    return Promise.all(favouritedIds.map(id => getMovieById(id)))
+}

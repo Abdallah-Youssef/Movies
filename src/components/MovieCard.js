@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
 import image from '../assets/generic_poster.jfif'
-import { isFavourited, getFavourites, toggleFavourited } from '../services/localStorageHelper';
+import { clearLocalStorage, getFavouriteIds, isFavourited, toggleFavourited } from '../services/localStorageHelper';
 // {
 //     "Title": "The L Word",
 //     "Year": "2004–2009",
@@ -16,15 +16,18 @@ import { isFavourited, getFavourites, toggleFavourited } from '../services/local
 //     "Type": "series",
 //     "Poster": "https://m.media-amazon.com/images/M/MV5BNTFjNzBlZDMtNzk0MS00NzhjLTgzODEtY2ZmMGQyMDZmMDNiXkEyXkFqcGdeQXVyMTA1OTAyOTI@._V1_SX300.jpg"
 // }
-export const MovieCard = ({movie}) => {
-    const [favourited, setFavourited] = useState(isFavourited(movie.id))
+export const MovieCard = ({movie, onFavouriteCallBack = ()=>{} }) => {
+    const [favourited, setFavourited] = useState(isFavourited(movie.imdbID))
     const handleFavouriteTap = () => {
-        toggleFavourited(movie.id)
-        setFavourited(isFavourited(movie.id))
+        toggleFavourited(movie.imdbID)
+        setFavourited(isFavourited(movie.imdbID))
+        onFavouriteCallBack()
     };
 
     const handleShareTap = () => {
-        alert("Share tapped!")
+        const message = `Checkout ${movie.Title}, ${movie.Year}`
+        const attachment = movie.Poster
+        window.open(`https://api.whatsapp.com/send/?phone&text=${message}`).focus();
     }
 
     return (
@@ -49,7 +52,7 @@ export const MovieCard = ({movie}) => {
             <CardActions>
                 <IconButton 
                 aria-label="add to favorites" 
-                style={{ color: (favourited ? "orange" : "grey") }} 
+                style={{ color: (favourited ? "gold" : "grey") }} 
                 onClick={handleFavouriteTap}>
                     <FavoriteIcon />
                 </IconButton>

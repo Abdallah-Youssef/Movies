@@ -9,13 +9,14 @@ function App() {
     <div className="App">
       
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Welcome}/>
+        <Switch> 
+          
+           <Route exact path="/" component={Welcome}/> 
 
           <Route path="/movies" component={MoviesPage}/>
 
-          <Route path="/login" component={LoginApp}/>
-        </Switch>
+           <Route path="/login" component={LoginApp}/> 
+         </Switch>
       </BrowserRouter>
      
     </div>
