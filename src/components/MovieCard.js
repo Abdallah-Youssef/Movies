@@ -25,10 +25,9 @@ export const MovieCard = ({movie, onFavouriteCallBack = ()=>{} }) => {
     };
 
     const handleShareTap = () => {
-        console.log(isFavourited(movie.id));
-        console.log(getFavouriteIds());
-        console.log(movie.id);
-        console.log(movie);
+        const message = `Checkout ${movie.Title}, ${movie.Year}`
+        const attachment = movie.Poster
+        window.open(`https://api.whatsapp.com/send/?phone&text=${message}`).focus();
     }
 
     return (
