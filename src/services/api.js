@@ -26,6 +26,7 @@ export function searchData(search_term, page_number) {
     });
 }
 
+// used
 export function getMovieById(id) {
   var requestOptions = {
     method: "GET",
@@ -36,10 +37,36 @@ export function getMovieById(id) {
     .then((response) => response.json())
     
 }
-export function updateMovieFav(movies, movieId, updatedProps) {
-  let moviesUpd = { ...movies };
-  for (let prop of Object.keys(updatedProps)) {
-    moviesUpd[movieId] = { ...moviesUpd[movieId], [prop]: updatedProps[prop] };
-  }
-  return moviesUpd;
+// export function updateMovieFav(movies, movieId, updatedProps) {
+//   let moviesUpd = { ...movies };
+//   for (let prop of Object.keys(updatedProps)) {
+//     moviesUpd[movieId] = { ...moviesUpd[movieId], [prop]: updatedProps[prop] };
+//   }
+//   return moviesUpd;
+// }
+
+export function login(username, password)
+{
+  return fetch(`http://localhost:5001/MoviesUsersApi/Users/authenticate`, {
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({username: username, password: password})
+  });
 }
+
+export function signup(username, email, password)
+{
+  return fetch(`http://localhost:5001/MoviesUsersApi/Users`, {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({username: username, email: email, password: password})
+  });
+}
+
+
